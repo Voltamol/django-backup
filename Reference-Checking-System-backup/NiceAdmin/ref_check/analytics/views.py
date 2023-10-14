@@ -21,35 +21,27 @@ def candidates(request):
 
 def candidate_idx(request):
     if request.method=='POST':
-        referee_form=RefereeForm(request.POST)
-        documents_form=CandidateDocumentsForm(request.POST)
-        print(referee_form)
-        # print(documents_form)
-        if documents_form.is_valid():
-            email=documents_form.cleaned_data['candidate-email']
-            try:
-                candidate=Candidate.objects.get(email=email)
-            except (KeyError,Candidate.DoesNotExist):
-                raise Http404('Candidate does not exist')
+        if "add_referee" in request.POST.get('form'):
+            referee_form=RefereeForm(request.POST)
+            if referee_form.is_valid():
+                referee_form.save()
+                return HttpResponseRedirect(reverse("analytics:candidate_profile_view"))
             else:
-                #saving documents...
-                documents=candidate.documents_set.create(
-                    job_title=documents_form.cleaned_data['job_title'],
-                    cv=documents_form.cleaned_data['cv'],
-                    photo=documents_form.cleaned_data['photo']
-                )
-                #documents.save()
-                #saving references...
-                if referee_form.is_valid():
-                    #references=candidate.referee_set.create()
-                    print(dict(referee_form))
-                    return HttpResponseRedirect(reverse("analytics:candidate_profile_view"))
-                else:
-                    raise Http404("referee validation check for mismatching name attributes")
+                raise Http404("referee form invalid")
+        elif "submit_documents" in request.POST.get('form'):
+            documents_form=CandidateDocumentsForm(request.POST)
+            if documents_form.is_valid():
+                documents_form.save()
+                return HttpResponseRedirect(reverse("analytics:candidate_idx"))
+            else:
+                raise Http404("documents form invalid")
         else:
-            raise Http404("documents validation check for mismatching name attributes")
+            print(request.POST)
+            raise Http404("you posted an invalid form")
     else:
-        return render(request,"analytics/Candidate_idx.html")
+        referee_form=RefereeForm()
+        documents_form=CandidateDocumentsForm()
+        return render(request,"analytics/Candidate_idx.html",{'referee_form':referee_form, 'documents_form':documents_form})
 
 def candidate_signup(request):
     if request.method == 'POST':

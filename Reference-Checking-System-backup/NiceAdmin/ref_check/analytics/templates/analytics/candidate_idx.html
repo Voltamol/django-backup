@@ -166,17 +166,14 @@
          </h5>
          <!--<p class="text-center small">References</p>-->
         </div>
-        {% comment %} this form was intentionally left without the post method to avoid it being submitted {% endcomment %}
-        <form class="row g-3 needs-validation reference-data" novalidate>
+        <form name="referee" class="row g-3 needs-validation final" novalidate method="post" action="{% url 'analytics:candidate_idx' %}">
           {% csrf_token %}
-         <hr id="seperator"/>
-         <div class="col-12">
-          
-          <a class="btn btn-primary add-ref" href="#">
-            Add referee
-           </a>
-         </div>
+          {{ referee_form.as_p }}
+          <div class="col-12">
+            <input type="submit" name="form" value="add_referee" class="btn btn-primary">
+          </div>
         </form>
+        
        </div>
       </div>
      </div>
@@ -193,76 +190,14 @@
           Upload your CV and a passport sized photo
          </p>
         </div>
-        <form class="row g-3 needs-validation final" novalidate method="post" action="{% url 'analytics:candidate_idx' %}">
-          {% csrf_token %}
-          <div class="hidden hidden-controls">
-            <div class="col-12">
-              <label class="form-label" for="company-name">
-                company name
-              </label>
-            <input class="form-control" id="company-name" name="comp_name" type="text"/>
-            </div>
-            <div class="col-12">
-              <label class="form-label" for="referee-name">
-                referee name
-              </label>
-            <input class="form-control" id="referee-name" name="referee_name" type="text"/>
-            </div>
-            <div class="col-12">
-              <label class="form-label" for="company-email">
-              company email
-              </label>
-              <input class="form-control" id="company-email" name="company_email" type="text"/>
-            </div>
-            <div class="col-12">
-              <label class="form-label" for="company-telephone">
-              company telephone
-              </label>
-              <input class="form-control" id="company-telephone" name="company_telephone" type="text"/>
-            </div>
-          </div>
-        </form>
-        <form class="row g-3 needs-validation final" novalidate method="post" action="{% url 'analytics:candidate_idx' %}">
+        
+        <form name="documents" class="row g-3 needs-validation final" novalidate method="post" action="{% url 'analytics:candidate_idx' %}">
             {% csrf_token %}
-            <div class="col-12">
-             <label class="form-label" for="candidate-email">
-              candidate email
-             </label>
-             <input class="form-control" id="candidate-email" name="candidate-email" type="text"/>
-            </div>
-            <div class="col-12">
-             <label class="form-label" for="company-telephone">
-              Job Title
-             </label>
-             <input class="form-control" id="job-title" name="job-title" type="text"/>
-            </div>
-            <div class="col-12">
-             <label class="form-label" for="yourUsername">
-              CV
-             </label>
-             <div class="input-group has-validation">
-              <input class="form-control-file" id="fileInput" name="cv" type="file"/>
-              <div class="invalid-feedback">
-               Please upload your CV as either word or pdf!
-              </div>
-             </div>
-            </div>
-            <div class="col-12">
-             <label class="form-label" for="yourPassword">
-              Photo
-             </label>
-             <br/>
-             <input class="form-control-file" id="photoInput" name="photo" type="file"/>
-             <div class="invalid-feedback">
-              Please upload your photo!
-             </div>
-            </div>
+            {{ documents_form.as_p }}
             <br/>
             <div class="col-12 submit-col">
              <!--<a  href="candidate profile view.html" class="btn btn-primary w-10" type="submit">Submit</a>-->
-             <button class="btn btn-primary" type="submit">
-              submit
-             </button>
+             <input type="submit" value="submit_documents" name="form" class="btn btn-primary">
             </div>
           
         </form>
