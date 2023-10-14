@@ -1,34 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-  <title>Candidate Report</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
-
+ <head>
+  {% load static %}
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Candidate Report
+  </title>
+  <meta content="" name="description"/>
+  <meta content="" name="keywords"/>
   <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
+  <link href="{% static 'analytics/assets/img/favicon.png' %}" rel="icon"/>
+  <link href="{% static 'analytics/assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon"/>
   <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
+  <link href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet"/>
   <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
-  <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
-  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
-
+  <link href="{% static 'analytics/assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet"/>
+  <link href="{% static 'analytics/assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet"/>
+  <link href="{% static 'analytics/assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet"/>
+  <link href="{% static 'analytics/assets/vendor/quill/quill.snow.css' %}" rel="stylesheet"/>
+  <link href="{% static 'analytics/assets/vendor/quill/quill.bubble.css' %}" rel="stylesheet"/>
+  <link href="{% static 'analytics/assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet"/>
+  <link href="{% static 'analytics/assets/vendor/simple-datatables/style.css' %}" rel="stylesheet"/>
   <!-- Template Main CSS File -->
-  <link href="assets/css/style.css" rel="stylesheet">
-
+  <link href="{% static 'analytics/assets/css/style.css' %}" rel="stylesheet"/>
   <!-- =======================================================
   * Template Name: NiceAdmin
   * Updated: Jul 27 2023 with Bootstrap v5.3.1
@@ -37,7 +33,7 @@
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
   <style>
-    .hidden{
+   .hidden{
       display: none;
     }
     .card{
@@ -52,82 +48,77 @@
       cursor: pointer;
     }
   </style>
-</head>
-
-<body style="padding-top: 50px;">
-  <header id="header" class="header fixed-top d-flex align-items-center">
-
-    <div class="d-flex align-items-center justify-content-center">
-      <a href="index.html" class="logo d-flex align-items-center">
-        <img src="assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">Reference Checking</span>
-      </a>
-    
-    </div><!-- End Logo -->
+ </head>
+ <body style="padding-top: 50px;">
+  <header class="header fixed-top d-flex align-items-center" id="header">
+   <div class="d-flex align-items-center justify-content-center">
+    <a class="logo d-flex align-items-center" href="{% url 'analytics:index' %}">
+     <img alt="" src="{% static 'analytics/assets/img/logo.png' %}"/>
+     <span class="d-none d-lg-block">
+      Reference Checking
+     </span>
+    </a>
+   </div>
+   <!-- End Logo -->
   </header>
   <!-- ======= Header ======= -->
-  <main id="main" class="main" style="margin: 0;">
-    <!--<i class="bi bi-file-earmark-pdf bg-primary rounded" id="print-button" data-bs-toggle="tooltip" data-bs-placement="top" title="print to pdf"></i>-->
-    
-    <section class="section">
-      <div class="row">
-      
-        <div class="col">
-
-          <div class="card" style="height: 100px;">
-            <div class="card-body pt-3">
-              <!-- Bordered Tabs -->
-              <ul class="nav nav-tabs nav-tabs-bordered" style="gap: 10px;">
-                <li class="nav-item">
-                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#analytics">Analytics</button>
-                </li>
-                
-              </ul>
-              <div class="tab-content pt-2">
-                <div class="tab-pane fade active show profile-overview" id="analytics">
-                  
-                </div>
-
-  
-              </div><!-- End Bordered Tabs -->
-
-            </div>
-          </div>
-          <div class="card card1">
-            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center justify-content-center">
-
-              <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle" width="300">
-              <h2>Dyllan Baloyi</h2>
-              
-            </div>
-          </div>
-          <div class="card" style="height: 100px;">
-            <div class="card-body pt-3">
-              <!-- Bordered Tabs -->
-              <ul class="nav nav-tabs nav-tabs-bordered" style="gap: 10px;">
-                <li class="nav-item">
-                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#analytics">Analytics</button>
-                </li>
-                
-              </ul>
-              <div class="tab-content pt-2">
-                <div class="tab-pane fade active show profile-overview" id="analytics">
-                  
-                </div>
-
-  
-              </div><!-- End Bordered Tabs -->
-
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">average opinion towards candidate from previous employers</h5>
-
-              <!-- Bar Chart -->
-              <canvas id="barChart" style="max-height: 400px;"></canvas>
-              <script>
-                let sentimentsBar;
+  <main class="main" id="main" style="margin: 0;">
+   <!--<i class="bi bi-file-earmark-pdf bg-primary rounded" id="print-button" data-bs-toggle="tooltip" data-bs-placement="top" title="print to pdf"></i>-->
+   <section class="section">
+    <div class="row">
+     <div class="col">
+      <div class="card" style="height: 100px;">
+       <div class="card-body pt-3">
+        <!-- Bordered Tabs -->
+        <ul class="nav nav-tabs nav-tabs-bordered" style="gap: 10px;">
+         <li class="nav-item">
+          <button class="nav-link active" data-bs-target="#analytics" data-bs-toggle="tab">
+           Analytics
+          </button>
+         </li>
+        </ul>
+        <div class="tab-content pt-2">
+         <div class="tab-pane fade active show profile-overview" id="analytics">
+         </div>
+        </div>
+        <!-- End Bordered Tabs -->
+       </div>
+      </div>
+      <div class="card card1">
+       <div class="card-body profile-card pt-4 d-flex flex-column align-items-center justify-content-center">
+        <img alt="Profile" class="rounded-circle" src="{% static 'analytics/assets/img/profile-img.jpg' %}" width="300"/>
+        <h2>
+         Dyllan Baloyi
+        </h2>
+       </div>
+      </div>
+      <div class="card" style="height: 100px;">
+       <div class="card-body pt-3">
+        <!-- Bordered Tabs -->
+        <ul class="nav nav-tabs nav-tabs-bordered" style="gap: 10px;">
+         <li class="nav-item">
+          <button class="nav-link active" data-bs-target="#analytics" data-bs-toggle="tab">
+           Analytics
+          </button>
+         </li>
+        </ul>
+        <div class="tab-content pt-2">
+         <div class="tab-pane fade active show profile-overview" id="analytics">
+         </div>
+        </div>
+        <!-- End Bordered Tabs -->
+       </div>
+      </div>
+      <div class="card">
+       <div class="card-body">
+        <h5 class="card-title">
+         average opinion towards candidate from previous employers
+        </h5>
+        <!-- Bar Chart -->
+        <canvas id="barChart" style="max-height: 400px;">
+        </canvas>
+        <script>
+         let sentimentsBar;
                 let setSentiments=(fullname)=>{
                   let sentiments=relatedData[fullname].sentiments
                   if(!sentimentsBar){
@@ -160,41 +151,37 @@
 
                   }
                 }
-                
-              </script>
-              <!-- End Bar CHart -->
-
-            </div>
-          </div>
-          <div class="card" style="height: 100px;">
-            <div class="card-body pt-3">
-              <!-- Bordered Tabs -->
-              <ul class="nav nav-tabs nav-tabs-bordered" style="gap: 10px;">
-                <li class="nav-item">
-                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#analytics">Analytics</button>
-                </li>
-                
-              </ul>
-              <div class="tab-content pt-2">
-                <div class="tab-pane fade active show profile-overview" id="analytics">
-                  
-                </div>
-
-  
-              </div><!-- End Bordered Tabs -->
-
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Average of scores</h5>
-
-              <!-- Doughnut Chart -->
-              <canvas id="doughnutChart" style="max-height: 400px;"></canvas>
-                      <script>
-                        
-                         
-                        let doughnut;
+        </script>
+        <!-- End Bar CHart -->
+       </div>
+      </div>
+      <div class="card" style="height: 100px;">
+       <div class="card-body pt-3">
+        <!-- Bordered Tabs -->
+        <ul class="nav nav-tabs nav-tabs-bordered" style="gap: 10px;">
+         <li class="nav-item">
+          <button class="nav-link active" data-bs-target="#analytics" data-bs-toggle="tab">
+           Analytics
+          </button>
+         </li>
+        </ul>
+        <div class="tab-content pt-2">
+         <div class="tab-pane fade active show profile-overview" id="analytics">
+         </div>
+        </div>
+        <!-- End Bordered Tabs -->
+       </div>
+      </div>
+      <div class="card">
+       <div class="card-body">
+        <h5 class="card-title">
+         Average of scores
+        </h5>
+        <!-- Doughnut Chart -->
+        <canvas id="doughnutChart" style="max-height: 400px;">
+        </canvas>
+        <script>
+         let doughnut;
                         let createChart=(fullname)=>{
                         let scores=relatedData[fullname].analytics.average_scores
                         if(!doughnut){
@@ -241,31 +228,28 @@
                         //   let data=[65, 59, 90, 81, 56, 55, 40]
                         //   createChart(data)
                         // })
-                      </script>
-              <!-- End Doughnut CHart -->
-
-            </div>
-          </div>
-          <div class="card" style="height: 100px;">
-            <div class="card-body pt-3">
-              <!-- Bordered Tabs -->
-              <ul class="nav nav-tabs nav-tabs-bordered" style="gap: 10px;">
-                <li class="nav-item">
-                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#analytics">Analytics</button>
-                </li>
-                
-              </ul>
-              <div class="tab-content pt-2">
-                <div class="tab-pane fade active show profile-overview" id="analytics">
-                  
-                </div>
-
-  
-              </div><!-- End Bordered Tabs -->
-
-            </div>
-          </div>
-          <!--<div class="card">
+        </script>
+        <!-- End Doughnut CHart -->
+       </div>
+      </div>
+      <div class="card" style="height: 100px;">
+       <div class="card-body pt-3">
+        <!-- Bordered Tabs -->
+        <ul class="nav nav-tabs nav-tabs-bordered" style="gap: 10px;">
+         <li class="nav-item">
+          <button class="nav-link active" data-bs-target="#analytics" data-bs-toggle="tab">
+           Analytics
+          </button>
+         </li>
+        </ul>
+        <div class="tab-content pt-2">
+         <div class="tab-pane fade active show profile-overview" id="analytics">
+         </div>
+        </div>
+        <!-- End Bordered Tabs -->
+       </div>
+      </div>
+      <!--<div class="card">
             <div class="card-body">
               <h5 class="card-title">Scores from references</h5>
 
@@ -327,17 +311,18 @@
               </div>
             </div>
           </div>-->
-        
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Stacked Bar Chart</h5>
-
-              <!-- Stacked Bar Chart -->
-              <canvas id="stakedBarChart" style="max-height: 400px;"></canvas>
-              
-              <canvas id="stakedBarChart" style="max-height: 400px;"></canvas>
-              <script>
-                let bars;
+      <div class="card">
+       <div class="card-body">
+        <h5 class="card-title">
+         Stacked Bar Chart
+        </h5>
+        <!-- Stacked Bar Chart -->
+        <canvas id="stakedBarChart" style="max-height: 400px;">
+        </canvas>
+        <canvas id="stakedBarChart" style="max-height: 400px;">
+        </canvas>
+        <script>
+         let bars;
                 let updateBars=(scores)=>{
                   bars.data.datasets=[]
                   references.forEach((reference)=>{
@@ -417,75 +402,77 @@
                   
                 }
               }
-                
-              </script>
-              
-              <!-- End Stacked Bar Chart -->
-
-            </div>
-          </div>
-
-          <div class="card" style="height: 100px;">
-            <div class="card-body pt-3">
-              <!-- Bordered Tabs -->
-              <ul class="nav nav-tabs nav-tabs-bordered" style="gap: 10px;">
-                <li class="nav-item">
-                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#analytics">Analytics</button>
-                </li>
-                
-              </ul>
-              <div class="tab-content pt-2">
-                <div class="tab-pane fade active show profile-overview" id="analytics">
-                  
-                </div>
-
-  
-              </div><!-- End Bordered Tabs -->
-
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Conclusion</h5>
-
-              <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle me-1"></i>
-                <p></p>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-            </div>
-          </div>
-        </div>
+        </script>
+        <!-- End Stacked Bar Chart -->
+       </div>
       </div>
-    </section>
-
-  </main><!-- End #main -->
-
+      <div class="card" style="height: 100px;">
+       <div class="card-body pt-3">
+        <!-- Bordered Tabs -->
+        <ul class="nav nav-tabs nav-tabs-bordered" style="gap: 10px;">
+         <li class="nav-item">
+          <button class="nav-link active" data-bs-target="#analytics" data-bs-toggle="tab">
+           Analytics
+          </button>
+         </li>
+        </ul>
+        <div class="tab-content pt-2">
+         <div class="tab-pane fade active show profile-overview" id="analytics">
+         </div>
+        </div>
+        <!-- End Bordered Tabs -->
+       </div>
+      </div>
+      <div class="card">
+       <div class="card-body">
+        <h5 class="card-title">
+         Conclusion
+        </h5>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+         <i class="bi bi-check-circle me-1">
+         </i>
+         <p>
+         </p>
+         <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button">
+         </button>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+  </main>
+  <!-- End #main -->
   <!-- ======= Footer ======= -->
-
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
+  <a class="back-to-top d-flex align-items-center justify-content-center" href="#">
+   <i class="bi bi-arrow-up-short">
+   </i>
+  </a>
   <!-- Vendor JS Files -->
-  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/chart.js/chart.umd.js"></script>
-  <script src="assets/vendor/echarts/echarts.min.js"></script>
-  <script src="assets/vendor/quill/quill.min.js"></script>
-  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
-  <script src="assets/vendor/tinymce/tinymce.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
-
-  <!-- Template Main JS File -->
-  <script src="assets/js/main.js"></script>
-
-  <script>
-    setTimeout(print,2000)
-    
+  <script src="{% static 'analytics/assets/vendor/apexcharts/apexcharts.min.js' %}">
   </script>
-
-<script>
-
-let references=['bakertilly','econet']
+  <script src="{% static 'analytics/assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}">
+  </script>
+  <script src="{% static 'analytics/assets/vendor/chart.js/chart.umd.js' %}">
+  </script>
+  <script src="{% static 'analytics/assets/vendor/echarts/echarts.min.js' %}">
+  </script>
+  <script src="{% static 'analytics/assets/vendor/quill/quill.min.js' %}">
+  </script>
+  <script src="{% static 'analytics/assets/vendor/simple-datatables/simple-datatables.js' %}">
+  </script>
+  <script src="{% static 'analytics/assets/vendor/tinymce/tinymce.min.js' %}">
+  </script>
+  <script src="{% static 'analytics/assets/vendor/php-email-form/validate.js' %}">
+  </script>
+  <!-- Template Main JS File -->
+  <script src="{% static 'analytics/assets/js/main.js' %}">
+  </script>
+  <script>
+   setTimeout(print,2000)
+  </script>
+  <script>
+   let references=['bakertilly','econet']
   let paletteIndex=0
   let colorPalette=[
     'rgba(54, 162, 235, 0.8)', // Blue
@@ -598,6 +585,6 @@ let displayAttributes=(row)=>{
   //setting first row as default display
 displayAttributes([1,'Brandon Jacob','Designer','+263 713 859 053','martinmuduva@baker.co.zw','assets/img/profile-img.jpg'])
   </script>
-</body>
-
+ </body>
 </html>
+
