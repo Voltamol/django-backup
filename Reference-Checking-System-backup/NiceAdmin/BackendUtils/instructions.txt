@@ -1,0 +1,13 @@
+In [1]: import os
+
+In [2]: module="custom"
+
+In [3]: source=os.path.dirname(os.getcwd())
+
+In [4]: path=os.path.join(source,module)
+
+In [5]: import sys
+
+In [6]: sys.path.append(path)
+
+In [7]: custom=__import__("custom")

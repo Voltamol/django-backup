@@ -1,0 +1,7 @@
+bs4
+channels
+django
+seaborn
+scikit-learn
+whitenoise
+
