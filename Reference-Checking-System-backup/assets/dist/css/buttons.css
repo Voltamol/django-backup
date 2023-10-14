@@ -1,0 +1,11 @@
+.custom-btn{
+    padding:15px;
+    font-family: 'Comfortaa', serif;
+    border: none;
+    border-radius:20px;
+    min-width: 100px;
+    word-spacing: 3px;
+    color: var(--toDo-theme);
+    font-weight: 700;
+    cursor: pointer;
+}

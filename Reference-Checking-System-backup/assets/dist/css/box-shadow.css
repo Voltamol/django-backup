@@ -1,0 +1,3 @@
+.right-shadow{
+    box-shadow: 5px 0px 15px var(--wireframe-theme);
+}
