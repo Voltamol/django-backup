@@ -1,14 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,Http404
 from django.urls import reverse
-from .models import (
-    Candidate,
-    Referee,
-    Candidate_Documents,
-    Referee_Questionnaire,
-    Progress_Tracker
-)
+from .models import Candidate
 from .forms import CandidateForm
+from .forms import RefereeForm
+from .forms import CandidateDocumentsForm
 # Create your views here.
 
 def index(request):
@@ -24,20 +20,45 @@ def candidates(request):
     return render(request,"analytics/candidates.html")
 
 def candidate_idx(request):
-    return render(request,"analytics/Candidate_idx.html")
+    if request.method=='POST':
+        referee_form=RefereeForm(request.POST)
+        documents_form=CandidateDocumentsForm(request.POST)
+        print(referee_form)
+        # print(documents_form)
+        if documents_form.is_valid():
+            email=documents_form.cleaned_data['candidate-email']
+            try:
+                candidate=Candidate.objects.get(email=email)
+            except (KeyError,Candidate.DoesNotExist):
+                raise Http404('Candidate does not exist')
+            else:
+                #saving documents...
+                documents=candidate.documents_set.create(
+                    job_title=documents_form.cleaned_data['job_title'],
+                    cv=documents_form.cleaned_data['cv'],
+                    photo=documents_form.cleaned_data['photo']
+                )
+                #documents.save()
+                #saving references...
+                if referee_form.is_valid():
+                    #references=candidate.referee_set.create()
+                    print(dict(referee_form))
+                    return HttpResponseRedirect(reverse("analytics:candidate_profile_view"))
+                else:
+                    raise Http404("referee validation check for mismatching name attributes")
+        else:
+            raise Http404("documents validation check for mismatching name attributes")
+    else:
+        return render(request,"analytics/Candidate_idx.html")
 
 def candidate_signup(request):
     if request.method == 'POST':
         form=CandidateForm(request.POST)
         if form.is_valid():
-            #form.save()
-            firstname=form.cleaned_data['firstname']
-            lastname=form.cleaned_data['lastname']
-            phone=form.cleaned_data['phone']
-            email=form.cleaned_data['email']
-            candidate=Candidate.objects.create(firstname=firstname,lastname=lastname,phone=phone,email=email)
-            candidate.save()
-            HttpResponseRedirect(reverse('analytics:candidate_idx'))
+            form.save()
+            return HttpResponseRedirect(reverse('analytics:candidate_idx'))
+        else:
+            raise Http404("check for mismatching name attributes")
     else:
         return render(request,"analytics/Candidate_signup.html")
 

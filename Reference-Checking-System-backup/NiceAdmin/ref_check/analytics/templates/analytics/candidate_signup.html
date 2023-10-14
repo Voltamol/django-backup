@@ -67,12 +67,13 @@
            </h5>
            <!--<p class="text-center small">Enter your personal details to create account</p>-->
           </div>
-          <form class="row g-3 needs-validation" novalidate="" action="{% url 'analytics:candidate_signup' %}">
-           <div class="col-12">
+          <form class="row g-3 needs-validation" novalidate action="{% url 'analytics:candidate_signup' %}" method="post">
+           {% csrf_token %}
+            <div class="col-12">
             <label class="form-label" for="yourName">
              First Name
             </label>
-            <input class="form-control" id="yourName" name="name" required="" type="text"/>
+            <input class="form-control" id="yourName" name="firstname" required type="text"/>
             <div class="invalid-feedback">
              Please, enter your name!
             </div>
@@ -81,7 +82,7 @@
             <label class="form-label" for="yourName">
              Last Name
             </label>
-            <input class="form-control" id="yourName" name="name" required="" type="text"/>
+            <input class="form-control" id="yourName" name="lastname" required type="text"/>
             <div class="invalid-feedback">
              Please, enter your name!
             </div>
@@ -90,16 +91,16 @@
             <label class="form-label" for="yourEmail">
              Phone Number
             </label>
-            <input class="form-control" id="yourEmail" name="email" required="" type="email"/>
+            <input class="form-control" id="phone_number" name="phone" required type="tel">
             <div class="invalid-feedback">
-             Please enter a valid Email adddress!
+             Please enter a valid phone_number!
             </div>
            </div>
            <div class="col-12">
             <label class="form-label" for="yourEmail">
              Your Email
             </label>
-            <input class="form-control" id="yourEmail" name="email" required="" type="email"/>
+            <input class="form-control" id="yourEmail" name="email" required type="email"/>
             <div class="invalid-feedback">
              Please enter a valid Email adddress!
             </div>
@@ -108,22 +109,14 @@
             <label class="form-label" for="yourPassword">
              Password
             </label>
-            <input class="form-control" id="yourPassword" name="password" required="" type="password"/>
+            <input class="form-control" id="yourPassword" name="password" required type="password"/>
             <div class="invalid-feedback">
              Please enter your password!
             </div>
            </div>
-           <!--<div class="col-12">
-                      <div class="form-check">
-                        <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required>
-                        <label class="form-check-label" for="acceptTerms">I agree and accept the <a href="#">terms and conditions</a></label>
-                        <div class="invalid-feedback">You must agree before submitting.</div>
-                      </div>
-                    </div>-->
+           
            <div class="col-12">
-            <a class="btn btn-primary" href="{% url 'analytics:candidate_idx' %}">
-             Create Account
-            </a>
+            <input type="submit" value="Create Account" class="btn btn-primary">
            </div>
            <div class="col-12">
             <p class="small mb-0">

@@ -49,14 +49,7 @@
     </a>
     <!--<i class="bi bi-list toggle-sidebar-btn"></i>-->
    </div>
-   <!-- End Logo -->
-   <!--<div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div>-->
-   <!-- End Search Bar -->
+   
    <nav class="header-nav ms-auto">
     <ul class="d-flex align-items-center">
      <li class="nav-item d-block d-lg-none">
@@ -65,82 +58,7 @@
        </i>
       </a>
      </li>
-     <!-- End Search Icon-->
-     <!--<li class="nav-item dropdown">
-
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-bell"></i>
-            <span class="badge bg-primary badge-number">4</span>
-          </a>
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-            <li class="dropdown-header">
-              You have 4 new notifications
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-exclamation-circle text-warning"></i>
-              <div>
-                <h4>Lorem Ipsum</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>30 min. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-x-circle text-danger"></i>
-              <div>
-                <h4>Atque rerum nesciunt</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>1 hr. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-check-circle text-success"></i>
-              <div>
-                <h4>Sit rerum fuga</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>2 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-info-circle text-primary"></i>
-              <div>
-                <h4>Dicta reprehenderit</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>4 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li class="dropdown-footer">
-              <a href="#">Show all notifications</a>
-            </li>
-
-          </ul>
-
-        </li>-->
-     <!-- End Notification Nav -->
+     
      <li class="nav-item dropdown">
       <!--<a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
             <i class="bi bi-chat-left-text"></i>
@@ -248,14 +166,12 @@
          </h5>
          <!--<p class="text-center small">References</p>-->
         </div>
-        <form class="row g-3 needs-validation reference-data" novalidate="">
+        {% comment %} this form was intentionally left without the post method to avoid it being submitted {% endcomment %}
+        <form class="row g-3 needs-validation reference-data" novalidate>
+          {% csrf_token %}
          <hr id="seperator"/>
          <div class="col-12">
-          {% comment %}
-            <a class="btn btn-primary add-ref" href="{% url 'analytics:referee_details' %}">
-              Add referee
-            </a>
-          {% endcomment %}
+          
           <a class="btn btn-primary add-ref" href="#">
             Add referee
            </a>
@@ -277,70 +193,78 @@
           Upload your CV and a passport sized photo
          </p>
         </div>
-        <form class="row g-3 needs-validation final" novalidate="">
-         <div class="hidden hidden-controls">
-          <div class="col-12">
-           <label class="form-label" for="company-name">
-            company name
-           </label>
-           <input class="form-control" id="company-name" name="company-name" type="text"/>
+        <form class="row g-3 needs-validation final" novalidate method="post" action="{% url 'analytics:candidate_idx' %}">
+          {% csrf_token %}
+          <div class="hidden hidden-controls">
+            <div class="col-12">
+              <label class="form-label" for="company-name">
+                company name
+              </label>
+            <input class="form-control" id="company-name" name="comp_name" type="text"/>
+            </div>
+            <div class="col-12">
+              <label class="form-label" for="referee-name">
+                referee name
+              </label>
+            <input class="form-control" id="referee-name" name="referee_name" type="text"/>
+            </div>
+            <div class="col-12">
+              <label class="form-label" for="company-email">
+              company email
+              </label>
+              <input class="form-control" id="company-email" name="company_email" type="text"/>
+            </div>
+            <div class="col-12">
+              <label class="form-label" for="company-telephone">
+              company telephone
+              </label>
+              <input class="form-control" id="company-telephone" name="company_telephone" type="text"/>
+            </div>
           </div>
-          <div class="col-12">
-           <label class="form-label" for="referee-name">
-            referee name
-           </label>
-           <input class="form-control" id="referee-name" name="referee-name" type="text"/>
-          </div>
-          <div class="col-12">
-           <label class="form-label" for="company-email">
-            company email
-           </label>
-           <input class="form-control" id="company-email" name="company-email" type="text"/>
-          </div>
-          <div class="col-12">
-           <label class="form-label" for="company-telephone">
-            company telephone
-           </label>
-           <input class="form-control" id="company-telephone" name="company-telephone" type="text"/>
-          </div>
-         </div>
-         <div class="col-12">
-          <label class="form-label" for="company-telephone">
-           Job Title
-          </label>
-          <input class="form-control" id="job-title" name="job-title" type="text"/>
-         </div>
-         <div class="col-12">
-          <label class="form-label" for="yourUsername">
-           CV
-          </label>
-          <div class="input-group has-validation">
-           <input class="form-control-file" id="fileInput" name="fileInput" type="file"/>
-           <div class="invalid-feedback">
-            Please upload your CV as either word or pdf!
-           </div>
-          </div>
-         </div>
-         <div class="col-12">
-          <label class="form-label" for="yourPassword">
-           Photo
-          </label>
-          <br/>
-          <input class="form-control-file" id="photoInput" name="photoInput" type="file"/>
-          <div class="invalid-feedback">
-           Please upload your photo!
-          </div>
-         </div>
-         <br/>
-         <!--<div class="col-12">
-                  <button class="btn btn-primary w-10" type="submit">Submit</button>
-                </div>-->
-         <div class="col-12 submit-col">
-          <!--<a  href="candidate profile view.html" class="btn btn-primary w-10" type="submit">Submit</a>-->
-          <button class="btn btn-primary" type="submit">
-           submit
-          </button>
-         </div>
+        </form>
+        <form class="row g-3 needs-validation final" novalidate method="post" action="{% url 'analytics:candidate_idx' %}">
+            {% csrf_token %}
+            <div class="col-12">
+             <label class="form-label" for="candidate-email">
+              candidate email
+             </label>
+             <input class="form-control" id="candidate-email" name="candidate-email" type="text"/>
+            </div>
+            <div class="col-12">
+             <label class="form-label" for="company-telephone">
+              Job Title
+             </label>
+             <input class="form-control" id="job-title" name="job-title" type="text"/>
+            </div>
+            <div class="col-12">
+             <label class="form-label" for="yourUsername">
+              CV
+             </label>
+             <div class="input-group has-validation">
+              <input class="form-control-file" id="fileInput" name="cv" type="file"/>
+              <div class="invalid-feedback">
+               Please upload your CV as either word or pdf!
+              </div>
+             </div>
+            </div>
+            <div class="col-12">
+             <label class="form-label" for="yourPassword">
+              Photo
+             </label>
+             <br/>
+             <input class="form-control-file" id="photoInput" name="photo" type="file"/>
+             <div class="invalid-feedback">
+              Please upload your photo!
+             </div>
+            </div>
+            <br/>
+            <div class="col-12 submit-col">
+             <!--<a  href="candidate profile view.html" class="btn btn-primary w-10" type="submit">Submit</a>-->
+             <button class="btn btn-primary" type="submit">
+              submit
+             </button>
+            </div>
+          
         </form>
        </div>
       </div>
