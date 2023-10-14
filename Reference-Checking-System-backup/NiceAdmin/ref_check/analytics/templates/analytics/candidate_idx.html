@@ -251,9 +251,14 @@
         <form class="row g-3 needs-validation reference-data" novalidate="">
          <hr id="seperator"/>
          <div class="col-12">
-          <a class="btn btn-primary add-ref" href="{% url 'analytics:referee_details' %}">
-           Add referee
-          </a>
+          {% comment %}
+            <a class="btn btn-primary add-ref" href="{% url 'analytics:referee_details' %}">
+              Add referee
+            </a>
+          {% endcomment %}
+          <a class="btn btn-primary add-ref" href="#">
+            Add referee
+           </a>
          </div>
         </form>
        </div>
