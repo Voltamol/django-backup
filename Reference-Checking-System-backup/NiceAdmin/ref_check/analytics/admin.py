@@ -3,7 +3,8 @@ from .models import(Candidate,
                     Referee, 
                     Candidate_Documents, 
                     Referee_Questionnaire, 
-                    Progress_Tracker)
+                    Progress_Tracker,
+                    SystemAdmin)
 
 @admin.register(Candidate)
 class CandidateAdmin(admin.ModelAdmin):
@@ -29,3 +30,7 @@ class RefereeQuestionnaireAdmin(admin.ModelAdmin):
 class ProgressTrackerAdmin(admin.ModelAdmin):
     list_display = ('id', 'candidate', 'referee', 'status')
     # Add any other desired configuration options or fieldsets
+
+@admin.register(SystemAdmin)
+class SystemAdminAdmin(admin.ModelAdmin):
+    list_display = ('id', 'email', 'password')

@@ -65,82 +65,7 @@
             <span class="badge bg-success badge-number">3</span>
           </a>-->
       <!-- End Messages Icon -->
-      <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-       <li class="dropdown-header">
-        You have 3 new messages
-        <a href="#">
-         <span class="badge rounded-pill bg-primary p-2 ms-2">
-          View all
-         </span>
-        </a>
-       </li>
-       <li>
-        <hr class="dropdown-divider"/>
-       </li>
-       <li class="message-item">
-        <a href="#">
-         <img alt="" class="rounded-circle" src="{% static 'analytics/assets/img/messages-1.jpg' %}"/>
-         <div>
-          <h4>
-           Maria Hudson
-          </h4>
-          <p>
-           Velit asperiores et ducimus soluta repudiandae labore officia est ut...
-          </p>
-          <p>
-           4 hrs. ago
-          </p>
-         </div>
-        </a>
-       </li>
-       <li>
-        <hr class="dropdown-divider"/>
-       </li>
-       <li class="message-item">
-        <a href="#">
-         <img alt="" class="rounded-circle" src="{% static 'analytics/assets/img/messages-2.jpg' %}"/>
-         <div>
-          <h4>
-           Anna Nelson
-          </h4>
-          <p>
-           Velit asperiores et ducimus soluta repudiandae labore officia est ut...
-          </p>
-          <p>
-           6 hrs. ago
-          </p>
-         </div>
-        </a>
-       </li>
-       <li>
-        <hr class="dropdown-divider"/>
-       </li>
-       <li class="message-item">
-        <a href="#">
-         <img alt="" class="rounded-circle" src="{% static 'analytics/assets/img/messages-3.jpg' %}"/>
-         <div>
-          <h4>
-           David Muldon
-          </h4>
-          <p>
-           Velit asperiores et ducimus soluta repudiandae labore officia est ut...
-          </p>
-          <p>
-           8 hrs. ago
-          </p>
-         </div>
-        </a>
-       </li>
-       <li>
-        <hr class="dropdown-divider"/>
-       </li>
-       <li class="dropdown-footer">
-        <a href="#">
-         Show all messages
-        </a>
-       </li>
-      </ul>
-      <!-- End Messages Dropdown Items -->
+      
      </li>
      <!-- End Messages Nav -->
     </ul>
@@ -166,11 +91,15 @@
          </h5>
          <!--<p class="text-center small">References</p>-->
         </div>
-        <form name="referee" class="row g-3 needs-validation final" novalidate method="post" action="{% url 'analytics:candidate_idx' %}">
+        <form name="referee" class="row g-3 needs-validation final" novalidate method="post" action="{% url 'analytics:candidate_idx' %}" id="referee_form">
+          <hr id="seperator">
           {% csrf_token %}
-          {{ referee_form.as_p }}
+          <div class="container-fluid hidden" id="referee_input_fields">
+            {{ referee_form.as_p }}
+          </div>
           <div class="col-12">
-            <input type="submit" name="form" value="add_referee" class="btn btn-primary">
+            <a href="#" class="btn btn-primary" onclick="start_adding(this)">Start Adding</a>
+            <input type="submit" name="form" value="add_referee" class="btn btn-primary hidden" id="ref_submit">
           </div>
         </form>
         
@@ -191,7 +120,7 @@
          </p>
         </div>
         
-        <form name="documents" class="row g-3 needs-validation final" novalidate method="post" action="{% url 'analytics:candidate_idx' %}">
+        <form name="documents" class="row g-3 needs-validation final" novalidate method="post" action="{% url 'analytics:candidate_idx' %}" enctype="multipart/form-data">
             {% csrf_token %}
             {{ documents_form.as_p }}
             <br/>
@@ -213,6 +142,61 @@
    <i class="bi bi-arrow-up-short">
    </i>
   </a>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    let start_adding=(element)=>{
+      element.classList.add("hidden");
+      element.classList.add("inputs_toggle");
+      document.getElementById('ref_submit').classList.remove("hidden");
+      document.getElementById("referee_input_fields").classList.remove("hidden");
+    }
+
+    let createElement=(template)=>{
+        let temp=document.createElement('div')
+        temp.innerHTML=template
+        let element=temp.lastChild
+        return element
+    }
+  </script>
+  <script>
+    $(document).ready(function() {
+        $('#referee_form').submit(function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        var form = $(this);
+        var formData = new FormData(form[0]);
+        formData.append('form', 'add_referee')
+        $.ajax({
+            type: form.attr('method'),
+            url: form.attr('action'),
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                // Handle the success response
+                let compTemplate=`<div class="col-12">
+                <input class="form-control" type="text" placeholder="${formData.get('comp_name')}" aria-label="Disabled input example" disabled>
+                
+              </div>`
+              let referee=createElement(compTemplate)
+              let seperator=document.getElementById("seperator")
+              seperator.parentElement.insertBefore(referee,seperator)
+              form[0].reset()
+              let element=document.querySelector(".inputs_toggle")
+              element.classList.remove("hidden");
+              element.classList.remove('inputs_toggle')
+              document.getElementById('ref_submit').classList.add("hidden");
+              document.getElementById("referee_input_fields").classList.add("hidden");
+            },
+            error: function(xhr, errmsg, err) {
+                // Handle the error response
+                alert(errmsg)
+                console.log(xhr.status + ": " + xhr.responseText);
+            }
+        });
+        });
+    });
+    </script>
   <!-- Vendor JS Files -->
   <script src="{% static 'analytics/assets/vendor/apexcharts/apexcharts.min.js' %}">
   </script>
@@ -233,93 +217,7 @@
   <!-- Template Main JS File -->
   <script src="{% static 'analytics/assets/js/main.js' %}">
   </script>
-  <script>
-   let template=`    <div>
-      <div class="col-12">
-        <label for="company-name" class="form-label">company name</label>
-        <input type="text" name="company" class="form-control">
-      
-      </div>
   
-      <div class="col-12">
-        <label for="referee-name" class="form-label">referee name</label>
-        <input type="text" name="referee" class="form-control">
-        
-      </div>
-  
-      <div class="col-12">
-        <label for="company-email" class="form-label">company email</label>
-        <input type="text" name="email" class="form-control">
-        
-      </div>
-  
-      <div class="col-12">
-        <label for="company-telephone" class="form-label">company telephone</label>
-        <input type="text" name="telephone" class="form-control">
-        
-      </div>
-      <br>
-      <div class="col-12">
-        <button class="btn btn-success w-10 add-comp" type="submit">Add</button>
-      </div>
-  </div>`
-
-  let createElement=(template)=>{
-    let temp=document.createElement('div')
-    temp.innerHTML=template
-    let element=temp.lastChild
-    return element
-}
-let inputFields;
-let gParent;
-let btnParent;
-  document.querySelector('.add-ref').onclick=((e)=>{
-    e.preventDefault()
-    let btn=e.target
-    btnParent=btn.parentElement
-    gParent=btnParent.parentElement
-    inputFields=createElement(template)
-    gParent.insertBefore(inputFields,btnParent)
-    document.querySelector('.submit-col').classList.add('hidden')
-    btnParent.classList.add('hidden')
-  })
-
-  let addValue=(value,id,groupname)=>{
-    if(groupname.querySelector(`#${id}`).value==''){
-      groupname.querySelector(`#${id}`).value+=`${value}`
-    }else{
-      groupname.querySelector(`#${id}`).value+=`;${value}`
-    }
-    
-  }
-
-  document.querySelector('.reference-data').addEventListener('submit',(e)=>{
-    e.preventDefault()
-    let form=e.target
-    let companyName=form['company'].value
-    let refereeName=form['referee'].value
-    let companyEmail=form['company'].value
-    let companyTelephone=form['telephone'].value
-    let compTemplate=`<div class="col-12">
-                <input class="form-control" type="text" placeholder="${companyName}" aria-label="Disabled input example" disabled>
-                
-              </div>`
-    let referee=createElement(compTemplate)
-    let seperator=document.getElementById("seperator")
-    seperator.parentElement.insertBefore(referee,seperator)
-    form.reset()
-    inputFields.remove()
-    document.querySelector('.submit-col').classList.remove('hidden')
-    btnParent.classList.remove('hidden')
-    let [form1,submitForm]=Array.from(document.getElementsByTagName('form'))
-    let controls=submitForm.querySelector('.hidden-controls')
-    //---------------------------------------------------------------------------------
-    addValue(companyName,'company-name',controls)
-    addValue(refereeName,'referee-name',controls)
-    addValue(companyEmail,'company-email',controls)
-    addValue(companyTelephone,'company-telephone',controls)
-  })
-  </script>
  </body>
 </html>
 

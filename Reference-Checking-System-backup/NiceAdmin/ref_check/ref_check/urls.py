@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('analytics.urls')),
     path('candidate_profile_view', include('analytics.urls')),
+    path('update', include('analytics.urls')),
     path('Candidate_Reports', include('analytics.urls')),
     path('candidates', include('analytics.urls')),
     path('candidate_idx', include('analytics.urls')),

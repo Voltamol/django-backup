@@ -150,6 +150,12 @@
    <i class="bi bi-arrow-up-short">
    </i>
   </a>
+  <script>
+    let user_exists=`{{ user_exists }}`
+    if(user_exists=='1'){
+      alert('user with given email already exists try using another one')
+    }
+  </script>
   <!-- Vendor JS Files -->
   <script src="{% static 'analytics/assets/vendor/apexcharts/apexcharts.min.js' %}">
   </script>

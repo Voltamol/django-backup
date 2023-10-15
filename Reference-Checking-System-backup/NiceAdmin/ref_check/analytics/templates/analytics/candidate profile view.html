@@ -52,9 +52,10 @@
         </h2>
        </div>
       </div>
-      <div class="card">
-       <div class="card-body profile-card pt-4 d-flex flex-column referees">
-        <select aria-label="Default select example" class="form-select referee-options" onchange="changeValues(this)">
+      <form class="card" method="post" action="{% url 'analytics:update' %}">
+        {% csrf_token %}
+        <div class="card-body profile-card pt-4 d-flex flex-column referees">
+        <!-- <select aria-label="Default select example" class="form-select referee-options" onchange="changeValues(this)">
          <option selected="" value="0">
           SELECT REFEREE
          </option>
@@ -92,14 +93,13 @@
           Company Telephone
          </label>
          <input class="form-control" id="telephone" placeholder="name@example.com" type="email"/>
-        </div>
+        </div> -->
+        {{ referee_form.as_p }}
         <div class="mb-3">
-         <button class="btn btn-primary w-100" type="submit">
-          Update
-         </button>
+         <input  name="form" value="Update_Referee" class="btn btn-primary w-100" type="submit">
         </div>
        </div>
-      </div>
+      </form>
      </div>
      <div class="col-xl-8">
       <div class="card">
@@ -132,7 +132,7 @@
             First Name
            </div>
            <div class="col-lg-9 col-md-8">
-            Kevin
+            {{ documents.candidate.firstname }}
            </div>
           </div>
           <div class="row">
@@ -140,7 +140,7 @@
             Last Name
            </div>
            <div class="col-lg-9 col-md-8">
-            Kevin
+            {{ documents.candidate.lastname }}
            </div>
           </div>
           <div class="row">
@@ -148,7 +148,7 @@
             Role
            </div>
            <div class="col-lg-9 col-md-8">
-            IT
+            {{ documents.job_title }}
            </div>
           </div>
           <div class="row">
@@ -156,7 +156,7 @@
             Phone Number
            </div>
            <div class="col-lg-9 col-md-8">
-            +263778317780
+            {{ documents.candidate.phone }}
            </div>
           </div>
           <div class="row">
@@ -164,7 +164,7 @@
             Email
            </div>
            <div class="col-lg-9 col-md-8">
-            k.anderson@example.com
+            {{ documents.candidate.email }}
            </div>
           </div>
           <!--<div class="row">
@@ -347,6 +347,11 @@
   <script>
    //referees
     //data = <?php echo $jsonData; ?>;
+
+    let referee_status =`{{ status }}`
+    if(referee_status!='0'){
+      alert('not found')
+    }
     data={
       Bakertilly:{
         company:'bakertilly',

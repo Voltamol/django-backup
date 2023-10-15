@@ -22,6 +22,17 @@ class RefereeForm(forms.ModelForm):
             'company_telephone':forms.TextInput(attrs={'class': 'form-control'})
         }
 
+# class RefereeBasicForm(forms.Form):
+#     candidate = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), choices=[])  # Replace choices with actual choices
+#     comp_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+#     referee_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+#     company_email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
+#     company_telephone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+#     def __init__(self, *args, **kwargs):
+#         super(RefereeForm, self).__init__(*args, **kwargs)
+#         self.fields['candidate'].choices = [(candidate.id, candidate.name) for candidate in Referee.objects.all()]
+
 class CandidateDocumentsForm(forms.ModelForm):
     class Meta:
         model = Candidate_Documents
@@ -37,3 +48,7 @@ class RefereeQuestionnaireForm(forms.ModelForm):
     class Meta:
         model = Referee_Questionnaire
         fields = '__all__'
+
+class LoginForm(forms.Form):
+    email= forms.EmailField()
+    password= forms.CharField(max_length=255)

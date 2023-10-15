@@ -9,6 +9,10 @@ class Candidate(models.Model):
 
     def __str__(self):
         return self.firstname
+    
+class SystemAdmin(models.Model):
+    email = models.EmailField()
+    password = models.CharField(max_length=255)
 
 class Referee(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)

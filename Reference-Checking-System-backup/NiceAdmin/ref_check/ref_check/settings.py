@@ -70,7 +70,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ref_check.wsgi.application'
 
-
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
