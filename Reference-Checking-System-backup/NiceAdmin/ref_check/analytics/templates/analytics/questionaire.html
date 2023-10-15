@@ -81,7 +81,7 @@
     <div class="card">
      <div class="card-body">
       {{ form.as_p }}
-      <input class="btn btn-primary w-100" type="submit" value="submit responses"/>
+      <input class="btn btn-primary w-100" type="submit" value="submit responses" onclick="toggle_disabled(false)">
     </div>
     
    </form>
@@ -126,6 +126,14 @@
   </script>
   <!-- Template Main JS File -->
   <script src="{% static 'analytics/assets/js/main.js' %}">
+  </script>
+  <script>
+    let toggle_disabled=(bool)=>{
+      Array.from(document.getElementsByClassName('disabled')).forEach((field)=>{
+        field.disabled = bool;
+      })
+    }
+    toggle_disabled(true);
   </script>
   <script>
    Array.from(document.getElementsByClassName("form-range")).forEach((range)=>{

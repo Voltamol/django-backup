@@ -71,6 +71,9 @@
         <table class="table datatable">
          <thead>
           <tr>
+            <th scope="col">
+              ID
+             </th>
            <th scope="col">
             Name
            </th>
@@ -86,6 +89,7 @@
           
            {% for document in documents %}
               <tr>
+                  <td>{{document.candidate.id}}</td>
                   <td>{{document.candidate.firstname}} {{document.candidate.lastname}}</td>
                   <td>{{document.job_title}}</td>
                   <td class="hidden">{{document.photo.url}}</td>
@@ -169,7 +173,7 @@
           </button>
          </li>
         </ul>
-        <form action="#" method="post" class="tab-content pt-2">
+        <div class="tab-content pt-2">
           <div class="tab-pane fade show active profile-overview" id="profile-overview">
             <h5 class="card-title">
             Profile Details
@@ -192,10 +196,10 @@
             </div>
           </div>
           <div class="col-12">
-            <button class="btn btn-primary w-100" type="submit" href="{% url 'analytics:questionnaire' %}">
+            <a class="btn btn-primary w-100" href="{% url 'analytics:questionnaire' %}" >
             Verify Candidate
-            </button>
-          </form>
+            </a>
+          </div>
         </div>
         <!-- End Bordered Tabs -->
        </div>
@@ -224,6 +228,7 @@
    <i class="bi bi-arrow-up-short">
    </i>
   </a>
+  
   <!-- Vendor JS Files -->
   <script src="{% static 'analytics/assets/vendor/apexcharts/apexcharts.min.js' %}">
   </script>
@@ -244,9 +249,11 @@
   <!-- Template Main JS File -->
   <script src="{% static 'analytics/assets/js/main.js' %}">
   </script>
+  
   <script>
    let displayAttributes=(row)=>{
-        let [fullName,role,img]=Array.from(row.getElementsByTagName('td'))
+        let [id,fullName,role,img]=Array.from(row.getElementsByTagName('td'))
+        document.cookie=`selected_candidate=${id}`
         let [card1,card2]=document.getElementById('candidates-profile').getElementsByClassName('card')
         card1.querySelector('h2').innerText=fullName.innerText
         card1.querySelector('img').src=img.innerText

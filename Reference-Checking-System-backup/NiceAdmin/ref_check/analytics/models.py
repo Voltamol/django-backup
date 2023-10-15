@@ -21,7 +21,7 @@ class Referee(models.Model):
     company_telephone = models.CharField(max_length=20)
 
     def __str__(self):
-        return self.comp_name
+        return self.referee_name
 
 def cv_upload_path(instance, filename):
     # Upload the CV file to the 'cv' subfolder
@@ -30,6 +30,7 @@ def cv_upload_path(instance, filename):
 def photo_upload_path(instance, filename):
     # Upload the photo file to the 'photos' subfolder
     return os.path.join('photos', filename)
+
 
 class Candidate_Documents(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)

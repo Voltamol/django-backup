@@ -45,8 +45,8 @@ class RefereeQuestionnaireForm(forms.ModelForm):
         model = Referee_Questionnaire
         fields = '__all__'
         widgets = {
-            'candidate': forms.Select(attrs={'class': 'form-control'}),
-            'referee': forms.Select(attrs={'class': 'form-control'}),
+            'candidate': forms.Select(attrs={'class': 'form-control disabled'}),
+            'referee': forms.Select(attrs={'class': 'form-control disabled'}),
             'problem_solving': forms.NumberInput(attrs={'class': 'form-control', 'type': 'range', 'min': '0', 'max': '100', 'value': '50'}),
             'communication_skills': forms.NumberInput(attrs={'class': 'form-control', 'type': 'range', 'min': '0', 'max': '100', 'value': '50'}),
             'time_management': forms.NumberInput(attrs={'class': 'form-control', 'type': 'range', 'min': '0', 'max': '100', 'value': '50'}),
@@ -56,6 +56,15 @@ class RefereeQuestionnaireForm(forms.ModelForm):
             'reliability': forms.NumberInput(attrs={'class': 'form-control', 'type': 'range', 'min': '0', 'max': '100', 'value': '50'}),
             'opinion': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
         }
+
+    def __init__(self, *args, **kwargs):
+        initial_candidate_id = kwargs.pop('initial_candidate_id', None)
+        initial_referee_id = kwargs.pop('initial_referee_id', None)
+        super().__init__(*args, **kwargs)
+        if initial_candidate_id:
+            self.initial['candidate'] = initial_candidate_id
+        if initial_referee_id:
+            self.initial['referee'] = initial_referee_id
 
 class LoginForm(forms.Form):
     email= forms.EmailField()

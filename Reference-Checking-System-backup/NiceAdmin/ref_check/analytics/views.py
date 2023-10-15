@@ -33,21 +33,28 @@ def candidate_profile_view(request):
     context={'referee_form':referee_form,'status':status,'documents':documents}
     return render(request,'analytics/candidate profile view.html',context=context)
 
-def handle_update(model,Form,model_name,request):
+def handle_update(model, Form, model_name, request):
     try:
-        query_dict={model_name:request.POST.get(model_name)}
-        model_instance=model.objects.get(**query_dict)
-    except (KeyError,model.DoesNotExist):
+        query_dict = {model_name: request.POST.get(model_name)}
+        model_instance = model.objects.get(**query_dict)
+    except (KeyError, model.DoesNotExist):
         request.session['not_found'] = 1
         return False
     else:
-        form=Form(request.POST,instance=model_instance)
+        form = Form(request.POST, instance=model_instance)
         if form.is_valid():
             form.save()
+
+            # Update the associated Verification model if it exists
+            if model == Referee:
+                verification = Verification.objects.filter(referee=model_instance)
+                if verification.exists():
+                    verification.update(candidate=form.instance)
+
         else:
             raise Http404("form invalid")
         return True
-    
+       
 def update(request):
     if request.method == 'POST':
         if 'Update_Referee' in request.POST.get('form'):
@@ -160,21 +167,37 @@ def questionnaire(request):
         form=RefereeQuestionnaireForm(request.POST)
         if form.is_valid():
             feedback=form.save()
-            verification=Verification(feedback.candidate, feedback.referee,is_verified=True)
-            verification.save()
-            return HttpResponseRedirect(reverse('analytics:referee_candidates_list',args=(referee_email,)))
+            try:
+                verification=Verification.objects.get(candidate_id=feedback.candidate.id,referee=feedback.referee.id)
+            except Verification.DoesNotExist:
+                verification=Verification(candidate=feedback.candidate, referee=feedback.referee,is_verified=True)
+                verification.save()
+                return HttpResponseRedirect(reverse('analytics:referee_candidates_list',args=(referee_email,)))
+            else:
+                verification.is_verified=True
+                verification.save()
+                return HttpResponseRedirect(reverse('analytics:referee_candidates_list',args=(referee_email,)))
+        else:
+            raise Http404("disabling might be causing problems")
     else:
-        form=RefereeQuestionnaireForm()
+        candidate_id=request.COOKIES.get('selected_candidate')
+        referee=Referee.objects.get(company_email=referee_email)
+        form=RefereeQuestionnaireForm(initial_candidate_id=candidate_id,initial_referee_id=referee.id)
         
         return render(request,'analytics/questionaire.html',{'form':form,'referee_email':referee_email})
 
 def referee_candidates_list(request,referee_email):
+    referee=Referee.objects.get(company_email=referee_email)
     documents = Candidate_Documents.objects.filter(
-        candidate__verification__is_verified=False
+        candidate__verification__is_verified=False,
+        candidate__verification__referee_id=referee.id
     )
     documents=set(list(documents))
-    request.session['referee_email']=referee_email
-    return render(request,'analytics/referee_candidates_list.html',{'documents':documents,'referee_email':referee_email})
+    if len(documents) == 0:
+        return HttpResponseRedirect(reverse('analytics:thank_you'))
+    else:
+        request.session['referee_email']=referee_email
+        return render(request,'analytics/referee_candidates_list.html',{'documents':documents,'referee_email':referee_email})
 
 def thank_you(request):
     return render(request,'analytics/thank_you.html')
