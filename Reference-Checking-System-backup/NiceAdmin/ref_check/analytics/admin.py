@@ -4,7 +4,9 @@ from .models import(Candidate,
                     Candidate_Documents, 
                     Referee_Questionnaire, 
                     Progress_Tracker,
-                    SystemAdmin)
+                    SystemAdmin,
+                    Verification,
+                    )
 
 @admin.register(Candidate)
 class CandidateAdmin(admin.ModelAdmin):
@@ -32,5 +34,9 @@ class ProgressTrackerAdmin(admin.ModelAdmin):
     # Add any other desired configuration options or fieldsets
 
 @admin.register(SystemAdmin)
-class SystemAdminAdmin(admin.ModelAdmin):
+class SystemAdmin(admin.ModelAdmin):
     list_display = ('id', 'email', 'password')
+
+@admin.register(Verification)
+class VerificationAdmin(admin.ModelAdmin):
+    list_display=('referee', 'candidate', 'is_verified')

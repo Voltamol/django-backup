@@ -1,5 +1,5 @@
 from django.db import models
-
+import os
 class Candidate(models.Model):
     firstname = models.CharField(max_length=255)
     lastname = models.CharField(max_length=255)
@@ -15,19 +15,30 @@ class SystemAdmin(models.Model):
     password = models.CharField(max_length=255)
 
 class Referee(models.Model):
-    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     comp_name = models.CharField(max_length=255)
     referee_name = models.CharField(max_length=255)
     company_email = models.EmailField()
     company_telephone = models.CharField(max_length=20)
 
+    def __str__(self):
+        return self.comp_name
+
+def cv_upload_path(instance, filename):
+    # Upload the CV file to the 'cv' subfolder
+    return os.path.join('cv', filename)
+
+def photo_upload_path(instance, filename):
+    # Upload the photo file to the 'photos' subfolder
+    return os.path.join('photos', filename)
+
 class Candidate_Documents(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     job_title = models.CharField(max_length=255)
-    cv = models.FileField(upload_to='cv/')
-    photo = models.ImageField(upload_to='photos/')
+    cv = models.FileField(upload_to=cv_upload_path)
+    photo = models.ImageField(upload_to=photo_upload_path)
 
 class Referee_Questionnaire(models.Model):
+    candidate=models.ForeignKey(Candidate, on_delete=models.CASCADE,default='')
     referee = models.ForeignKey(Referee, on_delete=models.CASCADE)
     problem_solving = models.IntegerField()
     communication_skills = models.IntegerField()
@@ -37,6 +48,11 @@ class Referee_Questionnaire(models.Model):
     team_work = models.IntegerField()
     reliability = models.IntegerField()
     opinion = models.CharField(max_length=200)
+
+class Verification(models.Model):
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
+    referee = models.ForeignKey(Referee, on_delete=models.CASCADE)
+    is_verified = models.BooleanField(default=False)
 
 class Progress_Tracker(models.Model):
     candidate = models.ForeignKey(Candidate_Documents, on_delete=models.CASCADE)

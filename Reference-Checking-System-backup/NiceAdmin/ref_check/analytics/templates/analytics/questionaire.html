@@ -67,7 +67,7 @@
     <nav>
      <ol class="breadcrumb">
       <li class="breadcrumb-item">
-       <a href="{% url 'analytics:referee_candidates_list' %}">
+       <a href="{% url 'analytics:referee_candidates_list' referee_email=referee_email %}">
         Candidates
        </a>
       </li>
@@ -76,119 +76,14 @@
     </nav>
    </div>
    <!-- End Page Title -->
-   <form action="" class="container-fluid" method="POST">
+   <form class="container-fluid" method="post" action="{% url 'analytics:questionnaire' %}">
+    {% csrf_token %}
     <div class="card">
      <div class="card-body">
-      <br/>
-      <div>
-       <label class="form-label" for="customRange2">
-        Problem_Solving (
-        <span class="percentage">
-         50
-        </span>
-        %)
-       </label>
-       <input class="form-range" id="customRange2" max="100" min="0" type="range"/>
-       <input class="value" name="problem_solving" type="text"/>
-      </div>
-      <br/>
-      <div>
-       <label class="form-label" for="customRange2">
-        Communication_Skills (
-        <span class="percentage">
-         50
-        </span>
-        %)
-       </label>
-       <input class="form-range" id="customRange2" max="100" min="0" type="range"/>
-       <input class="value" name="communication_skills" type="text"/>
-      </div>
-      <br/>
-      <div>
-       <label class="form-label" for="customRange2">
-        Time_Management (
-        <span class="percentage">
-         50
-        </span>
-        %)
-       </label>
-       <input class="form-range" id="customRange2" max="100" min="0" type="range"/>
-       <input class="value" name="time_management" type="text"/>
-      </div>
-      <br/>
-      <div>
-       <label class="form-label" for="customRange2">
-        Creativity (
-        <span class="percentage">
-         50
-        </span>
-        %)
-       </label>
-       <input class="form-range" id="customRange2" max="100" min="0" type="range"/>
-       <input class="value" name="creativity" type="text"/>
-      </div>
-      <br/>
-      <div>
-       <label class="form-label" for="customRange2">
-        Willingness_to_Learn (
-        <span class="percentage">
-         50
-        </span>
-        %)
-       </label>
-       <input class="form-range" id="customRange2" max="100" min="0" type="range"/>
-       <input class="value" name="willingness_to_learn" type="text"/>
-      </div>
-      <br/>
-      <div>
-       <label class="form-label" for="customRange2">
-        Team_Work (
-        <span class="percentage">
-         50
-        </span>
-        %)
-       </label>
-       <input class="form-range" id="customRange2" max="100" min="0" type="range"/>
-       <input class="value" name="team_work" type="text"/>
-      </div>
-      <br/>
-      <div>
-       <label class="form-label" for="customRange2">
-        Reliability (
-        <span class="percentage">
-         50
-        </span>
-        %)
-       </label>
-       <input class="form-range" id="customRange2" max="100" min="0" type="range"/>
-       <input class="value" name="reliability" type="text"/>
-      </div>
-     </div>
+      {{ form.as_p }}
+      <input class="btn btn-primary w-100" type="submit" value="submit responses"/>
     </div>
-    <!--<div class="accordion w-80" id="accordionExample">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-              1. Describe the candidate's work ethics in terms of their social stamina, commitment to deadlines and time consciousness.
-            </button>
-          </h2>
-          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-            <div class="accordion-body">
-              <textarea class="form-control" id="exampleTextarea" rows="5"></textarea>
-            </div>
-          </div>
-        </div>
-        
-      </div>-->
-    <div class="mb-3">
-     <label class="form-label" for="exampleFormControlTextarea1">
-      <strong>
-       give your opinion on employee in not more than 200 words
-      </strong>
-     </label>
-     <textarea class="form-control" id="exampleFormControlTextarea1" name="opinion" style="height: 150px;"></textarea>
-    </div>
-    <input class="btn btn-primary" type="submit" value="submit responses"/>
+    
    </form>
   </main>
   <!-- End #main -->
@@ -197,6 +92,21 @@
    <i class="bi bi-arrow-up-short">
    </i>
   </a>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    
+    $(document).ready(function() {
+      // Listen for changes in the form inputs
+        $(`#id_problem_solving, #id_communication_skills, #id_time_management, #id_creativity, #id_willingness_to_learn, #id_team_work, #id_reliability`).change(function() {
+          // Get the selected value
+          var selectedValue = $(this).val();
+          
+          // Update the corresponding label
+          var labelFor = $(this).attr('id');
+          $('label[for="' + labelFor + '"]').text(labelFor.replace('id_', '') + ': ' + selectedValue);
+        });
+      });
+  </script>
   <!-- Vendor JS Files -->
   <script src="{% static 'analytics/assets/vendor/apexcharts/apexcharts.min.js' %}">
   </script>

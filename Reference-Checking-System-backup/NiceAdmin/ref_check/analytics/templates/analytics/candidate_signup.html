@@ -69,52 +69,7 @@
           </div>
           <form class="row g-3 needs-validation" novalidate action="{% url 'analytics:candidate_signup' %}" method="post">
            {% csrf_token %}
-            <div class="col-12">
-            <label class="form-label" for="yourName">
-             First Name
-            </label>
-            <input class="form-control" id="yourName" name="firstname" required type="text"/>
-            <div class="invalid-feedback">
-             Please, enter your name!
-            </div>
-           </div>
-           <div class="col-12">
-            <label class="form-label" for="yourName">
-             Last Name
-            </label>
-            <input class="form-control" id="yourName" name="lastname" required type="text"/>
-            <div class="invalid-feedback">
-             Please, enter your name!
-            </div>
-           </div>
-           <div class="col-12">
-            <label class="form-label" for="yourEmail">
-             Phone Number
-            </label>
-            <input class="form-control" id="phone_number" name="phone" required type="tel">
-            <div class="invalid-feedback">
-             Please enter a valid phone_number!
-            </div>
-           </div>
-           <div class="col-12">
-            <label class="form-label" for="yourEmail">
-             Your Email
-            </label>
-            <input class="form-control" id="yourEmail" name="email" required type="email"/>
-            <div class="invalid-feedback">
-             Please enter a valid Email adddress!
-            </div>
-           </div>
-           <div class="col-12">
-            <label class="form-label" for="yourPassword">
-             Password
-            </label>
-            <input class="form-control" id="yourPassword" name="password" required type="password"/>
-            <div class="invalid-feedback">
-             Please enter your password!
-            </div>
-           </div>
-           
+           {{ form.as_p }}
            <div class="col-12">
             <input type="submit" value="Create Account" class="btn btn-primary">
            </div>

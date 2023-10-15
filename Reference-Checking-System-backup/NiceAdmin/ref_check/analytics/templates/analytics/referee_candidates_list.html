@@ -83,18 +83,15 @@
           </tr>
          </thead>
          <tbody>
-          <tr>
-           <td>
-            Brandon Jacob
-           </td>
-           <td>
-            Designer
-           </td>
-           <td>
-            assets/img/profile-img.jpg
-           </td>
-          </tr>
-          <tr>
+          
+           {% for document in documents %}
+              <tr>
+                  <td>{{document.candidate.firstname}} {{document.candidate.lastname}}</td>
+                  <td>{{document.job_title}}</td>
+                  <td class="hidden">{{document.photo.url}}</td>
+              </tr>
+           {% endfor %}
+          <!-- <tr>
            <td>
             Bridie Kessler
            </td>
@@ -137,7 +134,7 @@
            <td>
             assets/img/profile-img5.jpg
            </td>
-          </tr>
+          </tr> -->
          </tbody>
         </table>
         <!-- End Table with stripped rows -->
@@ -158,12 +155,6 @@
         <h2>
          Kevin Anderson
         </h2>
-        <!-- <div class="social-links mt-2">
-                <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-                <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-              </div> -->
        </div>
       </div>
      </div>
@@ -178,33 +169,33 @@
           </button>
          </li>
         </ul>
-        <div class="tab-content pt-2">
-         <div class="tab-pane fade show active profile-overview" id="profile-overview">
-          <h5 class="card-title">
-           Profile Details
-          </h5>
-          <div class="row">
-           <div class="col-lg-3 col-md-4 label">
-            Full Name
-           </div>
-           <div class="col-lg-9 col-md-8 fullName">
-            Kevin Anderson
-           </div>
+        <form action="#" method="post" class="tab-content pt-2">
+          <div class="tab-pane fade show active profile-overview" id="profile-overview">
+            <h5 class="card-title">
+            Profile Details
+            </h5>
+            <div class="row">
+            <div class="col-lg-3 col-md-4 label">
+              Full Name
+            </div>
+            <div class="col-lg-9 col-md-8 fullName">
+              ...
+            </div>
+            </div>
+            <div class="row">
+            <div class="col-lg-3 col-md-4 label">
+              Role
+            </div>
+            <div class="col-lg-9 col-md-8 role">
+              ...
+            </div>
+            </div>
           </div>
-          <div class="row">
-           <div class="col-lg-3 col-md-4 label">
-            Role
-           </div>
-           <div class="col-lg-9 col-md-8 role">
-            Web Designer
-           </div>
-          </div>
-         </div>
-         <div class="col-12">
-          <a class="btn btn-primary w-100" href="{% url 'analytics:questionnaire' %}">
-           Verify Candidate
-          </a>
-         </div>
+          <div class="col-12">
+            <button class="btn btn-primary w-100" type="submit" href="{% url 'analytics:questionnaire' %}">
+            Verify Candidate
+            </button>
+          </form>
         </div>
         <!-- End Bordered Tabs -->
        </div>

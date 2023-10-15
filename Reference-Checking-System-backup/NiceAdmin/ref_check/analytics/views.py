@@ -5,11 +5,15 @@ from django.http import JsonResponse
 from .models import Candidate
 from . models import Referee
 from . models import SystemAdmin
+from . models import Candidate_Documents
+from . models import Verification
 from .forms import CandidateForm
 from .forms import RefereeForm
 #from .forms import RefereeBasicForm
 from .forms import CandidateDocumentsForm
 from .forms import LoginForm
+from .forms import RefereeQuestionnaireForm
+
 # Create your views here.
 
 def index(request):
@@ -62,7 +66,11 @@ def candidate_idx(request):
         if "add_referee" in request.POST.get('form'):
             referee_form=RefereeForm(request.POST)
             if referee_form.is_valid():
-                referee_form.save()
+                referee=referee_form.save()
+                candidate_id=request.session.get('saved_candidate')
+                candidate=Candidate.objects.get(id=candidate_id)
+                verification=Verification(candidate=candidate,referee=referee,is_verified=False)
+                verification.save()
                 return JsonResponse({'message': 'success'})
             else:
                 raise Http404("referee form invalid")
@@ -86,10 +94,11 @@ def candidate_signup(request):
         form=CandidateForm(request.POST)
         email=request.POST.get('email')
         try:
-            user=Candidate.objects.get(email=email)
+            Candidate.objects.get(email=email)
         except (KeyError,Candidate.DoesNotExist):
             if form.is_valid():
-                form.save()
+                candidate=form.save()
+                request.session['saved_candidate']=candidate.id
                 request.session['email']=email
                 request.session['user']='Candidate'
                 return HttpResponseRedirect(reverse('analytics:candidate_idx'))
@@ -98,7 +107,8 @@ def candidate_signup(request):
         else:
             return render(request,"analytics/Candidate_signup.html",{'user_exists':1})
     else:
-        return render(request,"analytics/Candidate_signup.html",{'user_exists':0})
+        form=CandidateForm()
+        return render(request,"analytics/Candidate_signup.html",{'user_exists':0,'form':form})
     
 def authenticate(model,email,password):
     try:
@@ -145,10 +155,26 @@ def login(request):
         return render(request,"analytics/login.html",{'login_attempts':login_attempts})
 
 def questionnaire(request):
-    return render(request,'analytics/questionaire.html')
+    referee_email=request.session.get('referee_email')
+    if request.method=='POST':
+        form=RefereeQuestionnaireForm(request.POST)
+        if form.is_valid():
+            feedback=form.save()
+            verification=Verification(feedback.candidate, feedback.referee,is_verified=True)
+            verification.save()
+            return HttpResponseRedirect(reverse('analytics:referee_candidates_list',args=(referee_email,)))
+    else:
+        form=RefereeQuestionnaireForm()
+        
+        return render(request,'analytics/questionaire.html',{'form':form,'referee_email':referee_email})
 
-def referee_candidates_list(request):
-    return render(request,'analytics/referee_candidates_list.html')
+def referee_candidates_list(request,referee_email):
+    documents = Candidate_Documents.objects.filter(
+        candidate__verification__is_verified=False
+    )
+    documents=set(list(documents))
+    request.session['referee_email']=referee_email
+    return render(request,'analytics/referee_candidates_list.html',{'documents':documents,'referee_email':referee_email})
 
 def thank_you(request):
     return render(request,'analytics/thank_you.html')

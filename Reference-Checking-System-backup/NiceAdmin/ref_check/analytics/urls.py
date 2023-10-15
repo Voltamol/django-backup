@@ -15,6 +15,6 @@ urlpatterns = [
     path('candidate_signup', views.candidate_signup, name='candidate_signup'),
     path('login', views.login, name='login'),
     path('questionnaire', views.questionnaire, name='questionnaire'),
-    path('referee_candidates_list', views.referee_candidates_list, name='referee_candidates_list'),
+    path('referee_candidates_list/<str:referee_email>', views.referee_candidates_list, name='referee_candidates_list'),
     path('thank_you', views.thank_you, name='thank_you'),
 ]
