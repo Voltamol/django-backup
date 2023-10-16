@@ -36,16 +36,22 @@ def candidate_profile_view(request):
 def handle_update(model,post_data,label):
     
     candidate=Candidate.objects.get(email=post_data.get('email'))
+    model_fields=[field.get_attname() for field in model._meta.get_fields()]
     shared_attributes={
         key:value 
         for key,value in post_data.items()
-        if key in model._meta.get_fields()
+        if key in model_fields
     }
+    
+    print('shared_attributes',shared_attributes)
+    print('candidate',candidate)
     if label=='Update_Referee':
         verifications=Verification.objects.filter(
             candidate=candidate, referee__comp_name=shared_attributes.get('comp_name')
         )
+        print('verifications', verifications)
         for verification in verifications:
+            print(verification)
             for key,value in shared_attributes.items:
                 setattr(verification.referee,key,value)
             verification.referee.save()
@@ -79,6 +85,7 @@ def handle_update(model,post_data,label):
 def update(request):
     if request.method == 'POST':
         post_data=request.POST
+        print(request.POST.get('form'))
         if 'Update_Referee' in request.POST.get('form'):
             boolean=handle_update(Referee,post_data,'Update_Referee')
             if boolean:
