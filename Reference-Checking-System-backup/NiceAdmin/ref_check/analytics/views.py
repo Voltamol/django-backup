@@ -33,9 +33,9 @@ def candidate_profile_view(request):
     context={'referee_form':referee_form,'status':status,'documents':documents}
     return render(request,'analytics/candidate profile view.html',context=context)
 
-def handle_update(model, Form, model_name, request):
+def handle_update(model, Form, attribute_name, request):
     try:
-        query_dict = {model_name: request.POST.get(model_name)}
+        query_dict = {attribute_name: request.POST.get(attribute_name)}
         model_instance = model.objects.get(**query_dict)
     except (KeyError, model.DoesNotExist):
         request.session['not_found'] = 1
@@ -58,7 +58,7 @@ def handle_update(model, Form, model_name, request):
 def update(request):
     if request.method == 'POST':
         if 'Update_Referee' in request.POST.get('form'):
-            handle_update(Referee,RefereeForm,'referee_name',request)
+            handle_update(Referee,RefereeForm,'company_email',request)
         elif 'Update_Candidate' in request.POST.get('form'):
             handle_update(Candidate,CandidateForm,'email',request)
             

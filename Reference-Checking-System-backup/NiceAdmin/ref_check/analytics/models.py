@@ -38,6 +38,36 @@ class Candidate_Documents(models.Model):
     cv = models.FileField(upload_to=cv_upload_path)
     photo = models.ImageField(upload_to=photo_upload_path)
 
+    def truncate_filename(self, filename):
+        try:
+            filename=os.path.basename(filename)
+            filename,extension=filename.split('.')
+        except Exception:
+            filename=os.path.basename(filename)
+            extension="."
+        else:
+            extension_length=len(extension)
+            filename=filename[:10-extension_length]
+        finally:
+            filename="".join([filename,'..',extension])
+            return filename
+        
+    @property
+    def cv_basename(self):
+        return os.path.basename(self.cv.url)
+    
+    @property
+    def cv_truncated_basename(self):
+        return self.truncate_filename(self.cv.url)
+    
+    @property
+    def photo_basename(self):
+        return os.path.basename(self.photo.url)
+    
+    @property
+    def photo_truncated_basename(self):
+        return self.truncate_filename(self.photo.url)
+
 class Referee_Questionnaire(models.Model):
     candidate=models.ForeignKey(Candidate, on_delete=models.CASCADE,default='')
     referee = models.ForeignKey(Referee, on_delete=models.CASCADE)
