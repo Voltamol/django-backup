@@ -33,26 +33,70 @@ def candidate_profile_view(request):
     context={'referee_form':referee_form,'status':status,'documents':documents}
     return render(request,'analytics/candidate profile view.html',context=context)
 
-def handle_update(model,post_data):
+def handle_update(model,post_data,label):
+    
+    candidate=Candidate.objects.get(email=post_data.get('email'))
     shared_attributes={
         key:value 
         for key,value in post_data.items()
         if key in model._meta.get_fields()
     }
-    
-    model.update(**shared_attributes)
-    return model
+    if label=='Update_Referee':
+        verifications=Verification.objects.filter(
+            candidate=candidate, referee__comp_name=shared_attributes.get('comp_name')
+        )
+        for verification in verifications:
+            for key,value in shared_attributes.items:
+                setattr(verification.referee,key,value)
+            verification.referee.save()
+            return True
+    elif label=='Update_Candidate':
+        for key,value in shared_attributes.items:
+            setattr(candidate,key,value)
+        documents=candidate.candidate_documents_set.first()
+        updates=dict(
+            job_title=post_data.get('job_title'),
+            cv=post_data.get('cv'),
+            photo=post_data.get('photo')
+        )
+        for key,value in updates.itens():
+            setattr(documents,key,value)
+        candidate.save()
+        documents.save()
+        return True
+    elif label=='Change Password':
+        current=post_data.get('current_password')
+        new=post_data.get('new_password')
+        confirmation=post_data.get('confirmation')
+        if new==confirmation and candidate.password==current:
+            candidate.password=new
+            candidate.save()
+            return True
+        else:
+            return False
+        
 
 def update(request):
     if request.method == 'POST':
         post_data=request.POST
         if 'Update_Referee' in request.POST.get('form'):
-            handle_update(Referee,post_data)
-            return JsonResponse({'message':'Referee updated successfully'})
+            boolean=handle_update(Referee,post_data,'Update_Referee')
+            if boolean:
+                return JsonResponse({'message':'Referee updated successfully'})
+            else:
+                return JsonResponse({'message':'operation failed'})
         elif 'Update_Candidate' in request.POST.get('form'):
-            handle_update(Candidate,post_data)
-
-            return JsonResponse({'message':'Candidate updated successfully'})
+            boolean=handle_update(Candidate,post_data,'Update_Candidate')
+            if boolean:
+                return JsonResponse({'message':'Candidate updated successfully'})
+            else:
+                return JsonResponse({'message':'operation failed'})
+        elif 'Change Password' in request.POST.get('form'):
+            boolean=handle_update(Candidate,post_data,'Change Password')
+            if boolean:
+                return JsonResponse({'message':'password updated successfully'})
+            else:
+                return JsonResponse({'message':'operation failed, may be due to incorrect value of current password or the confirmation password does not match the new password'})
             
 def candidate_reports(request):
     return render(request,"analytics/Candidate Reports.html")
