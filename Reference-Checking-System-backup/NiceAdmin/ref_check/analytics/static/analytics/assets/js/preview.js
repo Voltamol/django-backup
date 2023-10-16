@@ -7,3 +7,17 @@ var loadFile = function(event) {
     
   };
 
+  var docPreview = function(event) {
+    var element = document.getElementById('doc-preview');
+    element.innerText="hover to preview"
+    // Get the Bootstrap tooltip instance
+    const tooltip = bootstrap.Tooltip.getInstance(element);
+
+    // Change the tooltip's content
+    tooltip._config.title = event.target.files[0].name
+    tooltip._setContent();
+
+    // Update the tooltip
+    tooltip.update();
+  };
+
