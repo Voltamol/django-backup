@@ -35,46 +35,64 @@ def candidate_profile_view(request):
 
 def handle_update(model,post_data,label):
     
-    candidate=Candidate.objects.get(email=post_data.get('email'))
-    model_fields=[field.get_attname() for field in model._meta.get_fields()]
+    email=post_data.get('email')
+    email=email[0] if isinstance(email,list) else email
+    
+    candidate=Candidate.objects.get(email=email)
+    model_fields=[
+        field.get_attname() 
+        for field in model._meta.get_fields()
+        if hasattr(field,'get_attname')
+    ]
     shared_attributes={
         key:value 
         for key,value in post_data.items()
         if key in model_fields
     }
     
-    print('shared_attributes',shared_attributes)
-    print('candidate',candidate)
+    
     if label=='Update_Referee':
+        comp_name=shared_attributes.get('comp_name')
+        comp_name=comp_name[0] if isinstance(comp_name,list) else comp_name
         verifications=Verification.objects.filter(
-            candidate=candidate, referee__comp_name=shared_attributes.get('comp_name')
+            candidate=candidate, referee__comp_name=comp_name
         )
-        print('verifications', verifications)
+        
         for verification in verifications:
-            print(verification)
-            for key,value in shared_attributes.items:
-                setattr(verification.referee,key,value)
+            
+            for key,value in shared_attributes.items():
+                setattr(verification.referee,key,value[0])
             verification.referee.save()
             return True
     elif label=='Update_Candidate':
-        for key,value in shared_attributes.items:
-            setattr(candidate,key,value)
+        for key,value in shared_attributes.items():
+            setattr(candidate,key,value[0])
         documents=candidate.candidate_documents_set.first()
         updates=dict(
-            job_title=post_data.get('job_title'),
-            cv=post_data.get('cv'),
-            photo=post_data.get('photo')
+            job_title=post_data.get('job_title')[0],
+            cv=post_data.get('cv')[0],
+            photo=post_data.get('photo')[0]
         )
-        for key,value in updates.itens():
+        cv=updates.get('cv')
+        if not cv:
+            updates.pop('cv')
+        
+        photo=updates.get('photo')
+        if not photo:
+            updates.pop('photo')
+        for key,value in updates.items():
             setattr(documents,key,value)
+        candidate.email=email
         candidate.save()
         documents.save()
         return True
     elif label=='Change Password':
         current=post_data.get('current_password')
+        current=current[0] if isinstance(current,list) else current
         new=post_data.get('new_password')
         confirmation=post_data.get('confirmation')
         if new==confirmation and candidate.password==current:
+            new=new[0] if isinstance(new,list) else new
             candidate.password=new
             candidate.save()
             return True
@@ -84,8 +102,9 @@ def handle_update(model,post_data,label):
 
 def update(request):
     if request.method == 'POST':
-        post_data=request.POST
-        print(request.POST.get('form'))
+        post_data=dict(request.POST)
+        if request.session.has_key('email'):
+            post_data['email']=request.session['email']
         if 'Update_Referee' in request.POST.get('form'):
             boolean=handle_update(Referee,post_data,'Update_Referee')
             if boolean:
@@ -93,12 +112,14 @@ def update(request):
             else:
                 return JsonResponse({'message':'operation failed'})
         elif 'Update_Candidate' in request.POST.get('form'):
+            post_data={**post_data,**dict(request.FILES)}
             boolean=handle_update(Candidate,post_data,'Update_Candidate')
             if boolean:
                 return JsonResponse({'message':'Candidate updated successfully'})
             else:
                 return JsonResponse({'message':'operation failed'})
         elif 'Change Password' in request.POST.get('form'):
+            
             boolean=handle_update(Candidate,post_data,'Change Password')
             if boolean:
                 return JsonResponse({'message':'password updated successfully'})
