@@ -13,7 +13,7 @@ from .forms import RefereeForm
 from .forms import CandidateDocumentsForm
 from .forms import LoginForm
 from .forms import RefereeQuestionnaireForm
-
+from .forms import RefereeHierarchicalForm
 # Create your views here.
 
 def index(request):
@@ -23,7 +23,7 @@ def index(request):
         return HttpResponseRedirect(reverse('analytics:login'))
 
 def candidate_profile_view(request):
-    referee_form=RefereeForm()
+    referee_form=RefereeHierarchicalForm()
     status=request.session.get('not_found',0)
     if request.session.has_key('not_found'):
         request.session.pop('not_found')
