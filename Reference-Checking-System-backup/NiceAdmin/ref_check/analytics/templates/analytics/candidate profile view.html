@@ -55,46 +55,23 @@
       <form class="card" method="post" action="{% url 'analytics:update' %}">
         {% csrf_token %}
         <div class="card-body profile-card pt-4 d-flex flex-column referees">
-        <!-- <select aria-label="Default select example" class="form-select referee-options" onchange="changeValues(this)">
-         <option selected="" value="0">
-          SELECT REFEREE
-         </option>
-         <option value="1">
-          Bakertilly
-         </option>
-         <option value="2">
-          Econet
-         </option>
-         <option value="3">
-          NetOne
-         </option>
-        </select>
-        <br/>
-        <div class="mb-3">
-         <label class="form-label" for="exampleFormControlInput1">
-          Company Name
-         </label>
-         <input class="form-control" id="company" placeholder="name@example.com" type="email"/>
-        </div>
-        <div class="mb-3">
-         <label class="form-label" for="exampleFormControlInput1">
-          Referee Name
-         </label>
-         <input class="form-control" id="referee" placeholder="name@example.com" type="email"/>
-        </div>
-        <div class="mb-3">
-         <label class="form-label" for="exampleFormControlInput1">
-          Company Email
-         </label>
-         <input class="form-control" id="email" placeholder="name@example.com" type="email"/>
-        </div>
-        <div class="mb-3">
-         <label class="form-label" for="exampleFormControlInput1">
-          Company Telephone
-         </label>
-         <input class="form-control" id="telephone" placeholder="name@example.com" type="email"/>
-        </div> -->
-        {{ referee_form.as_p }}
+          
+          <!-- Render the subfields individually -->
+          {% for field in form.subfields %}
+            <div>
+              {{ field.label_tag }}
+              {{ field }}
+              {% if field.errors %}
+                <ul class="errorlist">
+                  {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+          {% endfor %}
+            
+            
         <div class="mb-3">
          <input  name="form" value="Update_Referee" class="btn btn-primary w-100" type="submit">
         </div>
