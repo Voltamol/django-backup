@@ -33,34 +33,26 @@ def candidate_profile_view(request):
     context={'referee_form':referee_form,'status':status,'documents':documents}
     return render(request,'analytics/candidate profile view.html',context=context)
 
-def handle_update(model, Form, attribute_name, request):
-    try:
-        query_dict = {attribute_name: request.POST.get(attribute_name)}
-        model_instance = model.objects.get(**query_dict)
-    except (KeyError, model.DoesNotExist):
-        request.session['not_found'] = 1
-        return False
-    else:
-        form = Form(request.POST, instance=model_instance)
-        if form.is_valid():
-            form.save()
+def handle_update(model,post_data):
+    shared_attributes={
+        key:value 
+        for key,value in post_data.items()
+        if key in model._meta.get_fields()
+    }
+    
+    model.update(**shared_attributes)
+    return model
 
-            # Update the associated Verification model if it exists
-            if model == Referee:
-                verification = Verification.objects.filter(referee=model_instance)
-                if verification.exists():
-                    verification.update(candidate=form.instance)
-
-        else:
-            raise Http404("form invalid")
-        return True
-       
 def update(request):
     if request.method == 'POST':
+        post_data=request.POST
         if 'Update_Referee' in request.POST.get('form'):
-            handle_update(Referee,RefereeForm,'company_email',request)
+            handle_update(Referee,post_data)
+            return JsonResponse({'message':'Referee updated successfully'})
         elif 'Update_Candidate' in request.POST.get('form'):
-            handle_update(Candidate,CandidateForm,'email',request)
+            handle_update(Candidate,post_data)
+
+            return JsonResponse({'message':'Candidate updated successfully'})
             
 def candidate_reports(request):
     return render(request,"analytics/Candidate Reports.html")
