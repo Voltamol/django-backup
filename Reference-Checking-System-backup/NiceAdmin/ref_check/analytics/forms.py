@@ -36,8 +36,8 @@ class CandidateDocumentsForm(forms.ModelForm):
         widgets={
             'candidate': forms.Select(attrs={'class': 'form-control'}),
             'job_title': forms.TextInput(attrs={'class': 'form-control'}),
-            'cv': forms.FileInput(attrs={'class': 'form-control'}),
-            'photo': forms.ClearableFileInput(attrs={'class': 'form-control'})
+            'cv': forms.FileInput(attrs={'class': 'form-control','accept':".pdf, .doc, .docx, .pptx"}),
+            'photo': forms.ClearableFileInput(attrs={'class': 'form-control','accept':".jpg, .jpeg, .png"})
         }
 
 class RefereeQuestionnaireForm(forms.ModelForm):
