@@ -69,3 +69,53 @@ class RefereeQuestionnaireForm(forms.ModelForm):
 class LoginForm(forms.Form):
     email= forms.EmailField()
     password= forms.CharField(max_length=255)
+
+
+class RefereeSubfieldsForm(forms.Form):
+    comp_name = forms.CharField(max_length=255)
+    referee_name = forms.CharField(max_length=255)
+    company_email = forms.EmailField()
+    company_telephone = forms.CharField(max_length=20)
+
+class RefereeHierarchicalForm(forms.ModelForm):
+    subfields=RefereeSubfieldsForm()
+    class Meta:
+        model=Candidate
+        fields=['email']
+        widgets = {
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+        }
+
+    def __init__(self,*args,**kwargs):
+        self.fields['subfields'].widget = forms.MultiWidget(widgets=[
+            forms.TextInput(attrs={'class': 'form-control'}),
+            forms.TextInput(attrs={'class': 'form-control'}),
+            forms.EmailInput(attrs={'class':'form-control'}), 
+            forms.TextInput(attrs={'class': 'form-control'}),
+        ])
+
+        self.fields['subfields'].fields[0] = self.fields['subfields'].fields['comp_name']
+        self.fields['subfields'].fields[1] = self.fields['subfields'].fields['referee_name']
+        self.fields['subfields'].fields[2] = self.fields['subfields'].fields['company_email']
+        self.fields['subfields'].fields[3] = self.fields['subfields'].fields['company_telephone']
+
+    def decompress(self, value):
+        if value:
+            return [
+                value['subfields']['comp_name'],
+                value['subfields']['referee_name'], 
+                value['subfields']['company_email'], 
+                value['subfields']['company_telephone']
+            ]
+        
+        return [None, None, None, None]
+
+    def compress(self, data_list):
+        return {
+            'subfields': {
+                'comp_name': data_list[0],
+                'referee_name': data_list[1],
+                'company_email': data_list[2],
+                'company_telephone': data_list[3]
+            }
+        }
