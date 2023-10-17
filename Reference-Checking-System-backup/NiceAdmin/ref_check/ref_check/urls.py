@@ -34,6 +34,7 @@ urlpatterns = [
     path('questionnaire', include('analytics.urls')),
     path('referee_candidates_list', include('analytics.urls')),
     path('thank_you', include('analytics.urls')),
+    path('email',include('mail.urls')),
 ]
 
 if settings.DEBUG:

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'analytics',
+    'mail',
 ]
 
 MIDDLEWARE = [
@@ -111,6 +112,14 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+#EMAIL STUFF...
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'seanchirenje@gmail.com'  # Replace with your email
+EMAIL_HOST_PASSWORD = 'prer bjjz zhvv jqjv'  # Replace with your password
 
 
 # Static files (CSS, JavaScript, Images)
