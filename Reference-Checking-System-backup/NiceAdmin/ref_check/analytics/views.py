@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.http import JsonResponse
 from .models import Candidate
 from . models import Referee
+from . models import Referee_Questionnaire
 from . models import SystemAdmin
 from . models import Candidate_Documents
 from . models import Verification
@@ -128,7 +129,18 @@ def update(request):
         return JsonResponse({'message': request.POST.get('form')})   
     
 def candidate_reports(request):
-    return render(request,"analytics/Candidate Reports.html")
+    # Retrieve data from the models
+    candidates = Candidate.objects.all()
+    questionnaires = Referee_Questionnaire.objects.all()
+
+    # Create a context dictionary to pass data to the template
+    context = {
+        'candidates': candidates,
+        'questionnaires': questionnaires,
+    }
+
+    # Render the template with the context data
+    return render(request, "analytics/Candidate Reports.html", context)
 
 def candidates(request):
     return render(request,"analytics/candidates.html")
