@@ -1,7 +1,7 @@
 from django.urls import path
-from . import views
+from .views import email
 app_name='mail'
 urlpatterns=[
-    path('email',views.mail,name='email')
+    path('',email,name='email')
 ]
 
