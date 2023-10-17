@@ -12,11 +12,11 @@ def email(request):
         referees = Referee.objects.all()
         url_template:str=request.POST.get('url')
         for referee in referees:
-            recipient = referee.email
+            recipient = referee.company_email
 
             # Customize email content for each recipient
-            url = url_template + recipient  # Replace 'example.com' with your actual website domain
-            html_message = render_to_string('email_template.html', {'variable': 'value', 'url': url})
+            url = "".join([url_template,"/",recipient]) # Replace 'example.com' with your actual website domain
+            html_message = render_to_string('mail/email_template.html', {'variable': 'value', 'url': url})
             plain_message = strip_tags(html_message)
             from_email = 'seanchirenje@gmail.com'  # Replace with your email
             subject = 'Hello {0}! Please verify the following candidates on our website'.format(referee.referee_name)
