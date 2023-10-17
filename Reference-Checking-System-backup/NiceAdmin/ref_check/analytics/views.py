@@ -125,7 +125,8 @@ def update(request):
                 return JsonResponse({'message':'password updated successfully'})
             else:
                 return JsonResponse({'message':'operation failed, may be due to incorrect value of current password or the confirmation password does not match the new password'})
-            
+        return JsonResponse({'message': request.POST.get('form')})   
+    
 def candidate_reports(request):
     return render(request,"analytics/Candidate Reports.html")
 
@@ -265,3 +266,4 @@ def referee_candidates_list(request,referee_email):
 
 def thank_you(request):
     return render(request,'analytics/thank_you.html')
+

@@ -328,10 +328,23 @@
       let jquery_submit=(form_id)=>{
         $(form_id).submit(function(event) {
           event.preventDefault(); // Prevent default form submission
-
+          let submit_value;
+          switch(form_id){
+            case '#referee_update': 
+              submit_value ='Update_Referee';
+              break
+            case '#candidate_update':
+              submit_value ='Update_Candidate';
+              break
+            case '#password_update':
+              submit_value ='Change Password';
+              break
+            default:
+              break
+          }
           var form = $(this);
           var formData = new FormData(form[0]);
-          formData.append('form', 'add_referee')
+          formData.append('form', submit_value)
           $.ajax({
               type: form.attr('method'),
               url: form.attr('action'),
@@ -339,20 +352,7 @@
               processData: false,
               contentType: false,
               success: function(response) {
-                  // Handle the success response
-                  let compTemplate=`<div class="col-12">
-                  <input class="form-control" type="text" placeholder="${formData.get('comp_name')}" aria-label="Disabled input example" disabled>
-                  
-                </div>`
-                let referee=createElement(compTemplate)
-                let seperator=document.getElementById("seperator")
-                seperator.parentElement.insertBefore(referee,seperator)
-                form[0].reset()
-                let element=document.querySelector(".inputs_toggle")
-                element.classList.remove("hidden");
-                element.classList.remove('inputs_toggle')
-                document.getElementById('ref_submit').classList.add("hidden");
-                document.getElementById("referee_input_fields").classList.add("hidden");
+                  alert(response.message)
               },
               error: function(xhr, errmsg, err) {
                   // Handle the error response
@@ -363,9 +363,9 @@
           });
       }
       $(document).ready(function() {
-        jquery_submit('password_update')
-        jquery_submit('candidate_update')
-        jquery_submit('referee_update')
+        jquery_submit('#password_update')
+        jquery_submit('#candidate_update')
+        jquery_submit('#referee_update')
       });
     </script>
   <script>
