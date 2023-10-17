@@ -13,12 +13,12 @@ def email(request):
         from_email = 'seanchirenje@gmail.com'  # Replace with your email
         #to_email = 'lordvoltamol@gmail.com'  # Replace with the recipient's email
         referee=Referee.objects.first()
-        subject = 'Hello {0}! please verify the following candidates on our website'.format(referee.name) #
+        subject = 'Hello {0}! please verify the following candidates on our website'.format(referee.referee_name) #
         send_mail(
             subject, 
             plain_message, 
             from_email, 
-            [referee.email], 
+            [referee.company_email], 
             html_message=html_message
         )
         return HttpResponse("email sent successfully...")
