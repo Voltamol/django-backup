@@ -36,4 +36,4 @@ def email(request):
 
 def referee_redirect(request,referee_email):
     return HttpResponseRedirect(reverse('analytics:referee_candidate_list',args=(referee_email,)))
-    ...
+    
